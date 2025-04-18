@@ -8,6 +8,11 @@ End Sub
 
 Sub ExportMailMerge(Optional Format As String = "doc")
     On Error GoTo HandleError
+    
+    If Not FunctionExists("GetLocalPath") Then
+        MsgBox "Required module 'GetLocalOneDrivePath' is missing. Please add.", vbCritical
+        Exit Sub
+    End If
 
     Dim doc As Document
     Set doc = ActiveDocument
@@ -117,3 +122,11 @@ Private Function RemoveNonAlpha(str As String) As String
 End Function
 
 
+Private Function FunctionExists(funcName As String) As Boolean
+    On Error GoTo NotFound
+    Application.Run funcName, ""
+    FunctionExists = True
+    Exit Function
+NotFound:
+    FunctionExists = False
+End Function
